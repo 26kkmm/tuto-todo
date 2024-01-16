@@ -1,26 +1,32 @@
 import PySimpleGUI as sg
 from modules import functions
+import time
 
-label = sg.Text("Type a To-Do")
-input_box = sg.InputText(tooltip="Enter ToDo", key="todo")
+sg.theme('black')
+clock = sg.Text(''  , key='clock')
+label = sg.Text("Type a ToDo")
+input_add = sg.InputText(tooltip="Enter ToDo", key="todo")
 add_button = sg.Button("add")
 list_box = sg.Listbox(
-    values=functions.get_todos(), key="todos", enable_events=True, size=(45, 10)
+    values=functions.get_todos(), key="todos", enable_events=True, size=(40, 10)
 )
 button_edit = sg.Button("edit")
 button_done = sg.Button("done")
 button_exit = sg.Button("exit")
 
 window = sg.Window(
-    "My-To-Do App",
-    layout=[[label], [input_box, add_button], [list_box, button_edit, button_done]],
+    "My ToDo App",
+    layout=[[clock],[label], [input_add, add_button],
+            [list_box, button_edit, button_done]],
     font=("Helvetica", 20),
 )
 
 while True:
-    event, values = window.read()
+    event, values = window.read(timeout=1000)
     print(event)
     print(values)
+    window['clock'].update(value=time.strftime("%b %d, %Y %H:%M:%S"))
+
     match event:
         case "add":
             todos = functions.get_todos()
@@ -31,18 +37,23 @@ while True:
             window['todos'].update(values=todos)
 
         case 'edit':
-            todo_to_edit = values["todos"][0]
-            new_todo = values["todo"]
+            try:
+                window['todo'].update(value='')
+                todos = functions.get_todos()
+                todo_to_edit = values["todos"][0]
 
-            todos = functions.get_todos()
-            index = todos.index(todo_to_edit)
-            todos[index] = new_todo + "\n"
-            functions.write_todos(todos)
+                new_todo = sg.popup_get_text('Edit todo:', 'Edit',
+                                               default_text=todo_to_edit)
 
-            window['todos'].update(values=todos)
+                index = todos.index(todo_to_edit)
+                todos[index] = new_todo + "\n"
+                functions.write_todos(todos)
 
-        case 'todos':
-            window['todo'].update(value=values['todos'][0])
+                window['todos'].update(values=todos)
+            except IndexError:
+                sg.popup("Please Select a ToDo")
+
+
 
         case 'done':
             todos = functions.get_todos()

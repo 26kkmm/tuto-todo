@@ -1,3 +1,5 @@
 learn chess
-sleep at 10
+sleep at 9
 go for a walk
+find bugs
+write journal 
