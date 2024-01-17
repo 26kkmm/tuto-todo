@@ -15,7 +15,7 @@ list_box = sg.Listbox(
     values=functions.get_todos(), key="todos", enable_events=True, size=(40, 10)
 )
 
-button_add = sg.Button(image_source='add.png', tooltip='Add ToDo', size=10)
+button_add = sg.Button(image_source='add.png', tooltip='Add ToDo', size=10, key='add')
 button_edit = sg.Button("edit")
 button_done = sg.Button('done', tooltip='Done', size=8)
 button_exit = sg.Button("exit")
@@ -29,7 +29,7 @@ window = sg.Window(
 )
 
 while True:
-    event, values = window.read(timeout=1000)
+    event, values = window.read()
     print(event)
     print(values)
     window['clock'].update(value=time.strftime("%b %d, %Y %H:%M:%S"))

@@ -1,6 +1,5 @@
-learn chess
-sleep at 9
 go for a walk
-find bugs
-write journal 
-learn about sleep
+sleep at 10
+learn chess
+study genome
+organize the tasks
