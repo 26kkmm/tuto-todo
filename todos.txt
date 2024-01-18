@@ -3,3 +3,6 @@ sleep at 10
 learn chess
 study genome
 organize the tasks
+cook for lunch
+buy kale
+
